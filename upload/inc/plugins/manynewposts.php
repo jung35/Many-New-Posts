@@ -1,6 +1,6 @@
 <?php
 /**
- * Many New Posts 0.0.7
+ * Many New Posts 1.0.0
 
  * Copyright 2012 Jung Oh
 
@@ -40,7 +40,7 @@ function manynewposts_info()
 		"website" => "",
 		"author" => "Jung Oh",
 		"authorsite" => "http://jung3o.com",
-		"version" => "0.0.7",
+		"version" => "1.0.0",
 		"compatibility" => "16*",
 		"guid" => "de9ed989b4f83ba2a8283dade7127c37"
 	);
@@ -149,25 +149,24 @@ Many New Posts PLUGIN Forum Display
 function manynewposts_thread() {
 	global $thread,$templates,$db,$mybb,$settings;
 
-	$lastpost = "9000000000000000000000000000";
+	$lastpost = array();
 
-	$query=$db->query("SELECT * FROM " . TABLE_PREFIX . "posts WHERE tid='".$thread['tid']."'");
+	$query = $db->simple_select("posts","dateline,fid","tid='".$thread['tid']."'");
 	while($result=$db->fetch_array($query))
 	{
-	   $lastpost .=",".$result['dateline'];
+	   $lastpost[] = $result['dateline'];
 	   $getfid = $result['fid'];
 	}
 
-	$query = $db->simple_select("threadsread", "*", "uid='".$mybb->user['uid']."' AND tid='".$thread['tid']."'");
+	$query = $db->simple_select("threadsread", "dateline", "uid='".$mybb->user['uid']."' AND tid='".$thread['tid']."'");
 	$userlastview = $db->fetch_field($query, "dateline");
 
-	$query = $db->simple_select("forumsread", "*", "uid='".$mybb->user['uid']."' AND fid='".$getfid."'");
+	$query = $db->simple_select("forumsread", "dateline", "uid='".$mybb->user['uid']."' AND fid='".$getfid."'");
 	$userlastview_forum = $db->fetch_field($query, "dateline");
 
-	$lastpost = explode(",",$lastpost);
 	$count = 0;
 
-	$newlastpost = "9000000000000000000000000000";
+	$newlastpost = array(0);
 
 	$timelimit = $userlastview + ($settings['threadreadcut'] * 24 * 60 * 60);
 
@@ -177,34 +176,27 @@ function manynewposts_thread() {
 				if($lastpost_number > $userlastview_forum) {
 					if($lastpost_number > $userlastview) {
 						$count++;
-						$newlastpost .= ",".$lastpost_number;
+						$newlastpost[] = $lastpost_number;
 					}
 				}
 			}
 		}
 	}
 
-	$newlastpost = explode(",",$newlastpost);
+	if($count > 0) $count = $count-1;
 
-	if($count > 0) {
-	$count = $count-1;
-	}
-
-	if($count == 1){
+	if($count == 1) {
 		$posts = "post";
 	} elseif($count > 1) {
 		$posts = "posts";
 	}
 
-	$query = $db->simple_select("users", "*", "uid='".$mybb->user['uid']."'");
-	$ppp = $db->fetch_field($query, "ppp");
+	$ppp = $mybb->user['ppp'];
 
-	if($ppp == "0") {
-		$ppp = $mybb->settings['postsperpage'];
-	}
+	if(!$ppp) $ppp = $mybb->settings['postsperpage'];
 
 	$lastseenpost = min($newlastpost);
-	$query = $db->simple_select("posts", "*", "tid='".$thread['tid']."' AND dateline='".$lastseenpost."'");
+	$query = $db->simple_select("posts", "pid", "tid='".$thread['tid']."' AND dateline='".$lastseenpost."'");
 	$lastseenpost_pid = $db->fetch_field($query, "pid");
 
 	if($mybb->user['uid']) {
