@@ -1,0 +1,22 @@
+0.0.7
+	+ Not called Alpha anymore. Skipped from Beta because it looks stable now.
+	+ Now the thread won't have those "new posts" if it passes over how many days (Admin CP -> Settings -> Show Thread Options)
+
+0.0.6 Alpha
+	+ New threads / threads that the user haven't seen doesn't show the "new posts"
+
+0.0.5 Alpha
+	+ Fixed when guest users are browsing the thread division by zero
+
+0.0.4 Alpha
+	+ Integrated the plugin also with the search "thread"
+
+0.0.3 Alpha
+	+ Fixed the plugin when you click "mark forum as read"
+
+0.0.2 Alpha
+	+ First attempt to fix plugin
+	+ Now, the url doesn't goto "lastpost" but the post that it should goto
+
+0.0.1 Alpha
+	+ Plugin first commit
