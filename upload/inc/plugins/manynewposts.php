@@ -109,8 +109,8 @@ function manynewposts_is_installed()
 {
 	global $db;
 	
-	$query = $db->simple_select("templates", "*", "title='manynewposts'");
-	$exists = $db->fetch_field($query, "template");
+	$query = $db->simple_select("templates", "template", "title='manynewposts'");
+	$exists = $db->fetch_field($query);
 
 	if($exists) {
 		return true;
@@ -159,10 +159,10 @@ function manynewposts_thread() {
 	}
 
 	$query = $db->simple_select("threadsread", "dateline", "uid='".$mybb->user['uid']."' AND tid='".$thread['tid']."'");
-	$userlastview = $db->fetch_field($query, "dateline");
+	$userlastview = $db->fetch_field($query);
 
 	$query = $db->simple_select("forumsread", "dateline", "uid='".$mybb->user['uid']."' AND fid='".$getfid."'");
-	$userlastview_forum = $db->fetch_field($query, "dateline");
+	$userlastview_forum = $db->fetch_field($query);
 
 	$count = 0;
 
@@ -197,7 +197,7 @@ function manynewposts_thread() {
 
 	$lastseenpost = min($newlastpost);
 	$query = $db->simple_select("posts", "pid", "tid='".$thread['tid']."' AND dateline='".$lastseenpost."'");
-	$lastseenpost_pid = $db->fetch_field($query, "pid");
+	$lastseenpost_pid = $db->fetch_field($query);
 
 	if($mybb->user['uid']) {
 			$whichpage = ceil($lastseenpost_pid/$ppp);
