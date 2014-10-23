@@ -1,3 +1,7 @@
+2.0.0
+  + Updated to MYBB 1.8.0
+  + Better usage of queries
+
 0.0.7
 	+ Not called Alpha anymore. Skipped from Beta because it looks stable now.
 	+ Now the thread won't have those "new posts" if it passes over how many days (Admin CP -> Settings -> Show Thread Options)
