@@ -22,15 +22,15 @@ function manynewposts_info()
     "website" => "https://github.com/jung3o/Many-New-Posts",
     "author" => "Jung Oh",
     "authorsite" => "http://jung3o.com",
-    "version" => "2.0.0",
+    "version" => "2.0.1",
     "compatibility" => "18*",
   );
 }
 
 /**
- * Many New Posts plugin installer
+ * Many New Posts plugin enable
  */
-function manynewposts_install()
+function manynewposts_activate()
 {
   global $db;
   require_once MYBB_ROOT . "inc/adminfunctions_templates.php";
@@ -79,23 +79,6 @@ function manynewposts_install()
 
   find_replace_templatesets("search_results_threads_thread", "#".preg_quote('{$thread[\'multipage\']}')."#i", '{$thread[\'multipage\']}{$thread[\'manynewposts\']}');
   find_replace_templatesets("search_results_threads", "#".preg_quote('{$headerinclude}')."#i", '{$headerinclude}{$manynewposts_style}');
-}
-
-/**
- * Check if the plugin is installed
- */
-function manynewposts_is_installed()
-{
-  global $db;
-
-  $query = $db->simple_select("templates", "template", "title='manynewposts'");
-  $exists = $db->fetch_field($query, "template");
-
-  if($exists) {
-    return true;
-  }
-
-  return false;
 }
 
 /**
@@ -178,7 +161,7 @@ function manynewposts_thread() {
 
   var_dump($thread['subject']);
 
-  if($userlastview && $timelimit > time()) {
+  if($userlastview && $timelimit > TIME_NOW) {
     foreach ($lastpost as $lastpost_number) {
       if($lastpost_number > $userlastview_forum && $lastpost_number > $userlastview) {
         $newlastpost[] = $lastpost_number;
