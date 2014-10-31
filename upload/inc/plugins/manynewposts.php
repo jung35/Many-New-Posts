@@ -22,7 +22,7 @@ function manynewposts_info()
     "website" => "https://github.com/jung3o/Many-New-Posts",
     "author" => "Jung Oh",
     "authorsite" => "http://jung3o.com",
-    "version" => "2.0.1",
+    "version" => "2.0.2",
     "compatibility" => "18*",
   );
 }
@@ -175,18 +175,13 @@ function manynewposts_thread() {
 
   $posts = $count == 1 ? 'post':'posts';
 
-  $ppp = $mybb->user['ppp'];
-
-  if(!$ppp) $ppp = $mybb->settings['postsperpage'];
-
   $lastseenpost_pid = $lastpost_pid[min($newlastpost)];
   $manynewposts = "";
 
   if($mybb->user['uid']) {
-    $whichpage = ceil($lastseenpost_pid/$ppp);
     if($count > 0) {
       $manynewposts = $templates->get('manynewposts');
-      $manynewposts = str_replace("{newposts_link}", "./showthread.php?tid=".$thread['tid']."&page=".$whichpage."&pid=".$lastseenpost_pid."#pid".$lastseenpost_pid, $manynewposts);
+      $manynewposts = str_replace("{newposts_link}", "./showthread.php?tid=".$thread['tid']."&pid=".$lastseenpost_pid."#pid".$lastseenpost_pid, $manynewposts);
       $manynewposts = str_replace("{newposts}", $count, $manynewposts);
       $manynewposts = str_replace("{posts}", $posts, $manynewposts);
     }
