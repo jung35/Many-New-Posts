@@ -153,8 +153,8 @@ function manynewposts_thread() {
     $userlastview_forum[] = $result['fr_dateline'];
   }
 
-  $userlastview = max($userlastview);
-  $userlastview_forum = max($userlastview_forum);
+  $userlastview = (count($userlastview) > 0) ? max($userlastview) : 0;
+  $userlastview_forum = (count($userlastview_forum) > 0) ? max($userlastview_forum) : 0;
 
   $timelimit = $userlastview + ($settings['threadreadcut'] * 24 * 60 * 60);
   $newlastpost = array();
