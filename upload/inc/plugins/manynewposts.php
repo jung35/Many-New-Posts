@@ -159,8 +159,6 @@ function manynewposts_thread() {
   $timelimit = $userlastview + ($settings['threadreadcut'] * 24 * 60 * 60);
   $newlastpost = array();
 
-  var_dump($thread['subject']);
-
   if($userlastview && $timelimit > TIME_NOW) {
     foreach ($lastpost as $lastpost_number) {
       if($lastpost_number > $userlastview_forum && $lastpost_number > $userlastview) {
